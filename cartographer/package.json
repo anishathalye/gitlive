@@ -1,0 +1,11 @@
+{
+  "name": "Cartographer",
+  "description": "Real-time GitHub Data Visualization",
+  "repository": "https://github.com/anishathalye/gh-vis-challenge",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.8.4",
+    "rabbit.js": "^0.4.1"
+  },
+  "engine": "node >= 0.10"
+}

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>
+        Server Sent Events
+        <p>Received these events from RabbitMQ: </p>
+        <script>
+            var source = new EventSource('/events');
+            source.onmessage = function(e) {
+                var event = JSON.parse(JSON.parse(e.data));
+                document.body.innerHTML += ('<p>' + event.location + '</p>');
+            };
+        </script>
+    </body>
+</html>
