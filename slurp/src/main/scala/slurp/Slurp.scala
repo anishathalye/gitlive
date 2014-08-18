@@ -30,6 +30,6 @@ object Slurp {
     }
   }
 
-  private val QUEUE_CAPACITY = 60
+  private val QUEUE_CAPACITY = 256
 
 }
