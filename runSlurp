@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+slurp() {
+    (
+        cd $BASEDIR/slurp
+        sbt 'runMain slurp.Slurp'
+    )
+}
+
+while [ 1 ]; do
+    echo 'Running slurp...'
+    slurp
+    if [ $? == 130 ]; then
+        exit 130
+    fi
+done
