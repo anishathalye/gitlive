@@ -35,29 +35,20 @@
         });
     }
 
-    var heatmapData = new google.maps.MVCArray();
-    var heatmap = new google.maps.visualization.HeatmapLayer({
-        data: heatmapData,
-        radius: 25
-    });
-    heatmap.setMap(map);
-
     var source = new EventSource('/events');
     source.onmessage = function(e) {
         var event = JSON.parse(JSON.parse(e.data));
+        console.log('received data: ' + e.data);
         geocode(event.location, function(results) {
             console.log(results);
             var pos = results[0].geometry.location;
-            heatmapData.push(pos);
-            while (heatmapData.getLength() > 16) {
-                heatmapData.removeAt(0);
-            }
-            /*
-            new google.maps.Marker({
+            var marker = new google.maps.Marker({
                 position: pos,
                 map: map
             });
-            */
+            setTimeout(function() {
+                marker.setMap(null);
+            }, 500);
             // map.setCenter(results[0].geometry.location);
         });
     };
