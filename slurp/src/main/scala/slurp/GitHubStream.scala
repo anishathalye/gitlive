@@ -41,7 +41,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
       val resp = Await.result(req, DEFAULT_TIMEOUT)
 
       lastPollMillis = System.currentTimeMillis
-      val pollInterval = (resp getHeader "X-Poll-Interval").toLong
+      val pollInterval = (resp getHeader "X-Poll-Interval").toLong / 2 // speed up
       pollIntervalMillis = pollInterval * 1000
       eTag = resp getHeader "ETag" // update for next request
 
