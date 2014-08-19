@@ -48,6 +48,6 @@ class QueueDumper(val queue: BlockingQueue[String]) {
 
   private val HOST = "localhost"
 
-  private val POST_DELAY: Long = 1000
+  private val POST_DELAY: Long = 3000
 
 }
