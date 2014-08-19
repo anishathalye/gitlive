@@ -30,7 +30,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
   def getRawEvents(): List[Map[String, String]] = {
     try {
       val headers = Map("ETag" -> eTag)
-      val url = apiBase / "events" <<? keys <:< headers
+      val url = apiBase / "events" <<? keys <:< (headers ++ userAgent)
       val req = Http(url OK identity)
 
       val sleepTimeMillis = lastPollMillis + pollIntervalMillis - System.currentTimeMillis
@@ -71,7 +71,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
     location match {
       case Some(loc) => Future(loc)
       case None => {
-        val url = apiBase / "users" / user <<? keys
+        val url = apiBase / "users" / user <<? keys <:< userAgent
         val req = Http(url OK as.String)
         req map { res =>
           val loc = JsonParser(res) ~> "location" collect {
@@ -89,6 +89,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
 
   private val apiBase = url("https://api.github.com")
   private val keys = Map("client_id" -> clientId, "client_secret" -> clientSecret)
+  private val userAgent = Map("User-Agent" -> "anishathalye")
 
   private val DEFAULT_TIMEOUT = 10.seconds
 
