@@ -29,11 +29,12 @@ object Counter {
       val delivery = consumer.nextDelivery()
       val message = new String(delivery.getBody())
       val json = JsonParser(message)
-      val loc = (message ~> "location").asString
-      locs += loc
-      messages += 1
-      val time = (System.nanoTime - startTime) / 1000000000
-      println(s"${locs.size} unique, ${messages} total in ${time} seconds")
+      val loc = (json ~> "location") foreach { l =>
+        locs += l.asString
+        messages += 1
+        val time = (System.nanoTime - startTime) / 1000000000
+        println(s"${locs.size} unique, ${messages} total in ${time} seconds")
+      }
     }
   }
 
