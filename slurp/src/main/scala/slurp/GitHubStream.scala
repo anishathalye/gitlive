@@ -16,18 +16,22 @@ final class GitHubStream(clientId: String, clientSecret: String) {
   private var pollIntervalMillis: Long = 0
   private var eTag: String = ""
 
-  def getEvents(): List[String] = getRawEvents filter { event =>
-    event lift "location" match {
-      case Some(loc) => loc != ""
-      case None => false
+  def getEvents(): (List[String], Long) = {
+    val (events, pollInterval) = getRawEvents()
+    val filtered = events filter { event =>
+      event lift "location" match {
+        case Some(loc) => loc != ""
+        case None => false
+      }
+    } map { event =>
+      ObjectNode(event mapValues { value =>
+        StringNode(value)
+      }).toString
     }
-  } map { event =>
-    ObjectNode(event mapValues { value =>
-      StringNode(value)
-    }).toString
+    (filtered, pollInterval)
   }
 
-  def getRawEvents(): List[Map[String, String]] = {
+  def getRawEvents(): (List[Map[String, String]], Long) = {
     try {
       val headers = Map("ETag" -> eTag)
       val url = apiBase / "events" <<? keys <:< (headers ++ userAgent)
@@ -57,9 +61,9 @@ final class GitHubStream(clientId: String, clientSecret: String) {
           )
         }
       }
-      Await.result(Future.sequence(events), pollInterval.seconds)
+      (Await.result(Future.sequence(events), pollInterval.seconds), pollInterval)
     } catch {
-      case _: Exception => List(Map())
+      case _: Exception => (List(Map()), 5)
     }
   }
 
@@ -67,23 +71,17 @@ final class GitHubStream(clientId: String, clientSecret: String) {
   private val locations: MMap[String, String] = MMap[String, String]()
 
   private def getUserLocation(user: String): Future[String] = {
-    val location = locations.synchronized { locations lift user }
-    location match {
-      case Some(loc) => Future(loc)
-      case None => {
-        val url = apiBase / "users" / user <<? keys <:< userAgent
-        val req = Http(url OK as.String)
-        req map { res =>
-          val loc = JsonParser(res) ~> "location" collect {
-            case StringNode(l) => l
-          } getOrElse ""
-          // this is somewhat icky
-          locations.synchronized {
-            locations(user) = loc
-          }
-          loc
-        }
+    val url = apiBase / "users" / user <<? keys <:< userAgent
+    val req = Http(url OK as.String)
+    req map { res =>
+      val loc = JsonParser(res) ~> "location" collect {
+        case StringNode(l) => l
+      } getOrElse ""
+      // this is somewhat icky
+      locations.synchronized {
+        locations(user) = loc
       }
+      loc
     }
   }
 
