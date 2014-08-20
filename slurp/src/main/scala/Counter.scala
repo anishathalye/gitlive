@@ -1,4 +1,4 @@
-import collection.mutable.{Set => MSet}
+import collection.mutable.{ Set => MSet }
 
 import com.rabbitmq.client._
 

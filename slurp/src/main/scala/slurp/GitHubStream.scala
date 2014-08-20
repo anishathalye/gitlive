@@ -21,11 +21,11 @@ final class GitHubStream(clientId: String, clientSecret: String) {
     val filtered = events filter { event =>
       val fln = event lift "fromLocation" match {
         case Some(loc) => loc != ""
-        case None => false
+        case None      => false
       }
       val tln = event lift "toLocation" match {
         case Some(loc) => loc != ""
-        case None => false
+        case None      => false
       }
       fln && tln
     } map { event =>
@@ -54,14 +54,14 @@ final class GitHubStream(clientId: String, clientSecret: String) {
       pollIntervalMillis = pollInterval * 1000
       eTag = resp getHeader "ETag" // update for next request
 
-      val filtered = JsonParser(resp.getResponseBody) applyFilter { event => 
+      val filtered = JsonParser(resp.getResponseBody) applyFilter { event =>
         val allowed = Set("ForkEvent", "PullRequestEvent", "IssuesEvent", "WatchEvent")
         allowed contains (event ~> "type").asString
       }
       val events = filtered.asList map { event =>
         val eventType = (event ~> "type").asString
         val login = (event ~> "actor" ~> "login").asString
-        val (targetLogin, targetRest) = (event ~> "repo" ~> "name").asString span ( _ != '/' )
+        val (targetLogin, targetRest) = (event ~> "repo" ~> "name").asString span (_ != '/')
         val targetRepo = targetRest.tail
         async {
           val fromLocation = await(getUserLocation(login))

@@ -1,6 +1,6 @@
 package slurp
 
-import java.util.concurrent.{BlockingQueue, ArrayBlockingQueue}
+import java.util.concurrent.{ BlockingQueue, ArrayBlockingQueue }
 
 import com.typesafe.config.ConfigFactory
 
