@@ -24,10 +24,12 @@ object Slurp {
   def mainLoop(ghs: GitHubStream, queue: BlockingQueue[String]) {
     while (true) {
       val (events, pollInterval) = ghs.getEvents()
-      val timeStep = pollInterval * 1000 / events.length
-      events foreach { event =>
-        queue.offer(event)
-        Thread.sleep(timeStep)
+      val timeStep = pollInterval * 1000
+      if (events.nonEmpty) {
+        events foreach { event =>
+          queue.offer(event)
+          Thread.sleep(timeStep)
+        }
       }
     }
   }

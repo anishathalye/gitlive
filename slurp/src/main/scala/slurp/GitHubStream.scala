@@ -19,7 +19,11 @@ final class GitHubStream(clientId: String, clientSecret: String) {
   def getEvents(): (List[String], Long) = {
     val (events, pollInterval) = getRawEvents()
     val filtered = events filter { event =>
-      event lift "location" match {
+      event lift "fromLocation" match {
+        case Some(loc) => loc != ""
+        case None => false
+      }
+      event lift "toLocation" match {
         case Some(loc) => loc != ""
         case None => false
       }
@@ -49,15 +53,25 @@ final class GitHubStream(clientId: String, clientSecret: String) {
       pollIntervalMillis = pollInterval * 1000
       eTag = resp getHeader "ETag" // update for next request
 
-      val events = JsonParser(resp.getResponseBody).asList map { event =>
+      val filtered = JsonParser(resp.getResponseBody) applyFilter { event => 
+        val allowed = Set("ForkEvent", "PullRequestEvent", "IssuesEvent", "WatchEvent")
+        allowed contains (event ~> "type").asString
+      }
+      val events = filtered.asList map { event =>
         val eventType = (event ~> "type").asString
         val login = (event ~> "actor" ~> "login").asString
+        val (targetLogin, targetRest) = (event ~> "repo" ~> "name").asString span ( _ != '/' )
+        val targetRepo = targetRest.tail
         async {
-          val location = await(getUserLocation(login))
+          val fromLocation = await(getUserLocation(login))
+          val toLocation = await(getUserLocation(targetLogin))
           Map(
             "type" -> eventType,
-            "login" -> login,
-            "location" -> location
+            "fromLogin" -> login,
+            "fromLocation" -> fromLocation,
+            "toRepo" -> targetRepo,
+            "toLogin" -> targetLogin,
+            "toLocation" -> toLocation
           )
         }
       }
@@ -70,7 +84,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
   // TODO replace this with a LRU cache
   private val locations: MMap[String, String] = MMap[String, String]()
 
-  private def getUserLocation(user: String): Future[String] = {
+  def getUserLocation(user: String): Future[String] = {
     val url = apiBase / "users" / user <<? keys <:< userAgent
     val req = Http(url OK as.String)
     req map { res =>
