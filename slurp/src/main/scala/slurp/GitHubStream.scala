@@ -58,10 +58,15 @@ final class GitHubStream(clientId: String, clientSecret: String) {
         val allowed = Set("ForkEvent", "PullRequestEvent", "IssuesEvent", "WatchEvent")
         allowed contains (event ~> "type").asString
       }
-      val events = filtered.asList map { event =>
+      val uniqed = filtered applyFilter { event =>
+        val login = (event ~> "actor" ~> "login").asString
+        val targetLogin = (event ~> "repo" ~> "name").asString takeWhile { _ != '/'}
+        login != targetLogin
+      }
+      val events = uniqed.asList map { event =>
         val eventType = (event ~> "type").asString
         val login = (event ~> "actor" ~> "login").asString
-        val (targetLogin, targetRest) = (event ~> "repo" ~> "name").asString span (_ != '/')
+        val (targetLogin, targetRest) = (event ~> "repo" ~> "name").asString span { _ != '/' }
         val targetRepo = targetRest.tail
         async {
           val fromLocation = await(getUserLocation(login))
