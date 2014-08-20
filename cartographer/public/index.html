@@ -19,8 +19,8 @@
 
     var map = new google.maps.Map(document.getElementById('map'), { 
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        zoom: 2,
-        center: new google.maps.LatLng(40, 3)
+        zoom: 3,
+        center: new google.maps.LatLng(30, 0)
     });
 
     var geocoder = new google.maps.Geocoder();
@@ -48,7 +48,7 @@
             });
             setTimeout(function() {
                 marker.setMap(null);
-            }, 500);
+            }, 5000);
             // map.setCenter(results[0].geometry.location);
         });
     };
