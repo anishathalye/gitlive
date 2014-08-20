@@ -19,14 +19,15 @@ final class GitHubStream(clientId: String, clientSecret: String) {
   def getEvents(): (List[String], Long) = {
     val (events, pollInterval) = getRawEvents()
     val filtered = events filter { event =>
-      event lift "fromLocation" match {
+      val fln = event lift "fromLocation" match {
         case Some(loc) => loc != ""
         case None => false
       }
-      event lift "toLocation" match {
+      val tln = event lift "toLocation" match {
         case Some(loc) => loc != ""
         case None => false
       }
+      fln && tln
     } map { event =>
       ObjectNode(event mapValues { value =>
         StringNode(value)
