@@ -15,6 +15,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
   private var lastPollMillis: Long = 0
   private var pollIntervalMillis: Long = 0
   private var eTag: String = ""
+  private var lastId = BigInt("-1")
 
   def getEvents(): (List[String], Long) = {
     val (events, pollInterval) = getRawEvents()
@@ -54,16 +55,29 @@ final class GitHubStream(clientId: String, clientSecret: String) {
       pollIntervalMillis = pollInterval * 1000
       eTag = resp getHeader "ETag" // update for next request
 
-      val filtered = JsonParser(resp.getResponseBody) applyFilter { event =>
+      val json = JsonParser(resp.getResponseBody).asList
+      val nextId = if (json.nonEmpty) {
+        BigInt((json.head ~> "id").asString)
+      } else {
+        lastId
+      }
+      val latest = json filter { event =>
+        BigInt((event ~> "id").asString) > lastId
+      }
+      lastId = nextId
+
+      val filtered = latest filter { event =>
         val allowed = Set("ForkEvent", "PullRequestEvent", "IssuesEvent", "WatchEvent")
         allowed contains (event ~> "type").asString
       }
-      val uniqed = filtered applyFilter { event =>
+
+      val uniqed = filtered filter { event =>
         val login = (event ~> "actor" ~> "login").asString
         val targetLogin = (event ~> "repo" ~> "name").asString takeWhile { _ != '/'}
         login != targetLogin
       }
-      val events = uniqed.asList map { event =>
+
+      val events = uniqed map { event =>
         val eventType = (event ~> "type").asString
         val login = (event ~> "actor" ~> "login").asString
         val (targetLogin, targetRest) = (event ~> "repo" ~> "name").asString span { _ != '/' }
@@ -83,7 +97,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
       }
       (Await.result(Future.sequence(events), pollInterval.seconds), pollInterval)
     } catch {
-      case _: Exception => (List(Map()), 5)
+      case _: Exception => (List(Map()), 0)
     }
   }
 
