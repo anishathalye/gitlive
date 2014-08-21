@@ -38,7 +38,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
 
   def getRawEvents(): (List[Map[String, String]], Long) = {
     try {
-      val headers = Map("ETag" -> eTag)
+      val headers = Map("If-None-Match" -> eTag)
       val url = apiBase / "events" <<? keys <:< (headers ++ userAgent)
       val req = Http(url OK identity)
 

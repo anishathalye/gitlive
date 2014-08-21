@@ -30,10 +30,14 @@ object Slurp {
           queue.offer(event)
           Thread.sleep(timeStep)
         }
+      } else {
+        Thread.sleep(EMPTY_SLEEP)
       }
     }
   }
 
   private val QUEUE_CAPACITY = 256
+
+  private val EMPTY_SLEEP = 5
 
 }
