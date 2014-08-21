@@ -18,10 +18,6 @@ context.on('ready', function() {
 app = express();
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function(req, res){
-    res.sendFile('index.html', { root: __dirname + "/public" } );
-});
-
 app.get('/events', function(req, res) {
     if (req.headers.accept == 'text/event-stream') {
         res.writeHead(200, {
