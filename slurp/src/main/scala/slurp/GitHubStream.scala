@@ -5,6 +5,8 @@ import scala.collection.mutable.{ Map => MMap }
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
+import java.util.concurrent.ExecutionException
+
 import dispatch._, Defaults._
 
 import morph.ast._, DSL._, Implicits._
@@ -51,7 +53,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
       val resp = Await.result(req, DEFAULT_TIMEOUT)
 
       lastPollMillis = System.currentTimeMillis
-      val pollInterval = (resp getHeader "X-Poll-Interval").toLong / 4 // speed up
+      val pollInterval = (resp getHeader "X-Poll-Interval").toLong / 8 // speed up
       pollIntervalMillis = pollInterval * 1000
       eTag = resp getHeader "ETag" // update for next request
 
@@ -67,8 +69,13 @@ final class GitHubStream(clientId: String, clientSecret: String) {
       lastId = nextId
 
       val filtered = latest filter { event =>
-        val allowed = Set("ForkEvent", "PullRequestEvent", "IssuesEvent", "WatchEvent")
-        allowed contains (event ~> "type").asString
+        (event ~> "type").asString match {
+          case "ForkEvent" => true
+          case "WatchEvent" => true
+          case "PullRequestEvent" => (event ~> "payload" ~> "action").asString == "opened"
+          case "IssuesEvent" => (event ~> "payload" ~> "action").asString == "opened"
+          case _ => false
+        }
       }
 
       val uniqed = filtered filter { event =>
@@ -97,7 +104,10 @@ final class GitHubStream(clientId: String, clientSecret: String) {
       }
       (Await.result(Future.sequence(events), pollInterval.seconds), pollInterval)
     } catch {
-      case _: Exception => (List(Map()), 0)
+      case e: ExecutionException => {
+        e.printStackTrace()
+        (List(Map()), 0)
+      }
     }
   }
 
