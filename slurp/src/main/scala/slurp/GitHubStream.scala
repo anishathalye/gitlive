@@ -5,7 +5,7 @@ import scala.collection.mutable.{ Map => MMap }
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-import java.util.concurrent.ExecutionException
+import java.util.concurrent.{ ExecutionException, TimeoutException }
 
 import dispatch._, Defaults._
 
@@ -53,7 +53,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
       val resp = Await.result(req, DEFAULT_TIMEOUT)
 
       lastPollMillis = System.currentTimeMillis
-      val pollInterval = (resp getHeader "X-Poll-Interval").toLong / 8 // speed up
+      val pollInterval = (resp getHeader "X-Poll-Interval").toLong / 16 // speed up
       pollIntervalMillis = pollInterval * 1000
       eTag = resp getHeader "ETag" // update for next request
 
@@ -104,7 +104,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
       }
       (Await.result(Future.sequence(events), pollInterval.seconds), pollInterval)
     } catch {
-      case e: ExecutionException => {
+      case e @ (_: ExecutionException | _: TimeoutException) => {
         e.printStackTrace()
         (List(Map()), 0)
       }
