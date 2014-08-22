@@ -54,6 +54,7 @@ function broadcast(data) {
 function writeEvent(res, id, data) {
     res.write('id: ' + id + '\n');
     res.write('data: ' + data + '\n\n');
+    res.flush();
 }
 
 function removeConnection(res) {
