@@ -1,6 +1,6 @@
 package slurp
 
-import java.util.concurrent.{ BlockingQueue, ArrayBlockingQueue }
+import java.util.concurrent.{ BlockingQueue, LinkedBlockingQueue }
 
 import com.typesafe.config.ConfigFactory
 
@@ -15,7 +15,7 @@ object Slurp {
     val clientId = config.getString("github.clientId")
     val clientSecret = config.getString("github.clientSecret")
     val ghs = new GitHubStream(clientId, clientSecret)
-    val queue = new ArrayBlockingQueue[String](QUEUE_CAPACITY)
+    val queue = new LinkedBlockingQueue[String]()
     val qd = new QueueDumper(queue)
     qd.start()
     mainLoop(ghs, queue)
@@ -35,8 +35,6 @@ object Slurp {
       }
     }
   }
-
-  private val QUEUE_CAPACITY = 256
 
   private val EMPTY_SLEEP = 5
 
