@@ -1,5 +1,6 @@
 var express = require('express');
-var rabbit = require('rabbit.js')
+var compression = require('compression');
+var rabbit = require('rabbit.js');
 var connections = [];
 
 var context = rabbit.createContext();
@@ -16,6 +17,7 @@ context.on('ready', function() {
 });
 
 app = express();
+app.use(compression());
 app.use(express.static(__dirname + '/public'));
 
 app.get('/events', function(req, res) {

@@ -5,7 +5,8 @@
   "version": "1.0.0",
   "dependencies": {
     "express": "^4.8.4",
-    "rabbit.js": "^0.4.1"
+    "rabbit.js": "^0.4.1",
+    "compression": "~1.0.11"
   },
   "engine": "node >= 0.10"
 }
