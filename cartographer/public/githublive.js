@@ -40,9 +40,8 @@ source.onmessage = function(e) {
                 latitude: to[0].geometry.location.lat(),
                 longitude: to[0].geometry.location.lng()
             }
-            fromLoc.radius = 50; toLoc.radius = 50;
-            locs.push(fromLoc); locs.push(toLoc);
-            map.bubbles(locs);
+            locs.push({origin: fromLoc, destination: toLoc});
+            map.arc(locs, {strokeWidth: 2});
         });
     });
 };
