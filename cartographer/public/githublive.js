@@ -6,7 +6,7 @@ var map = new Datamap({
     }
 });
 
-var geocoder = new google.maps.Geocoder();
+// var geocoder = new google.maps.Geocoder();
 
 var geocode = function(location, success, retries) {
     if (typeof(retries) === 'undefined') retries = 3;
@@ -27,9 +27,12 @@ var geocode = function(location, success, retries) {
 
 var locs = [];
 
-var source = new EventSource('/events');
-source.onmessage = function(e) {
-    var event = JSON.parse(JSON.parse(e.data));
+var processEvent = function(from, to) {
+    locs.push({origin: from, destination: to});
+    map.arc(locs, {strokeWidth: 2});
+};
+
+var processRawEvent = function(event) {
     geocode(event.fromLocation, function(from) {
         geocode(event.toLocation, function(to) {
             var fromLoc = {
@@ -40,8 +43,13 @@ source.onmessage = function(e) {
                 latitude: to[0].geometry.location.lat(),
                 longitude: to[0].geometry.location.lng()
             }
-            locs.push({origin: fromLoc, destination: toLoc});
-            map.arc(locs, {strokeWidth: 2});
+            processEvent(fromLoc, toLoc);
         });
     });
+};
+
+var source = new EventSource('/events');
+source.onmessage = function(e) {
+    var event = JSON.parse(JSON.parse(e.data));
+    processRawEvent(event);
 };
