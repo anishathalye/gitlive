@@ -36,6 +36,6 @@ object Slurp {
     }
   }
 
-  private val EMPTY_SLEEP = 5
+  private val EMPTY_SLEEP = 5000
 
 }
