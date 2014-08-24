@@ -47,7 +47,7 @@ var logLoc = function(idx) {
     processEvent(loc[0], loc[1]);
     setTimeout(function() {
         logLoc(idx + 1);
-    }, 1000);
+    }, 500);
 };
 
 logLoc(0);
