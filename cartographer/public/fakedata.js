@@ -9,9 +9,9 @@ var fakeLocs = [
             longitude: 40
         },
         options: {
-            strokeColor: '#95932e',
-            fillColor: '#555400',
-            borderColor: '#d2d199'
+            strokeColor: '#b98038',
+            fillColor: '#794300',
+            borderColor: '#f6dec0'
         }
     },
     {
@@ -24,9 +24,9 @@ var fakeLocs = [
             longitude: -5
         },
         options: {
-            strokeColor: '#95672e',
-            fillColor: '#552f00',
-            borderColor: '#d2b999'
+            strokeColor: '#38982e',
+            fillColor: '#096300',
+            borderColor: '#a2ca9d'
         }
     },
     {
@@ -39,9 +39,9 @@ var fakeLocs = [
             longitude: -5
         },
         options: {
-            strokeColor: '#3f2565',
-            fillColor: '#19033a',
-            borderColor: '#7a6c8f'
+            strokeColor: '#b6373e',
+            fillColor: '#760006',
+            borderColor: '#f2bdc0'
         }
     },
     {
@@ -52,8 +52,13 @@ var fakeLocs = [
         destination: {
             latitude: 20,
             longitude: -80
+        },
+        options: {
+            strokeColor: '#b9a238',
+            fillColor: '#796300',
+            borderColor: '#f6ecc0'
         }
-   }
+    }
 ];
 
 var logLoc = function(idx) {

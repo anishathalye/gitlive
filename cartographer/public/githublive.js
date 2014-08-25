@@ -34,7 +34,7 @@ var locs = [];
 
 var processEvent = function(data) {
     locs.push(data);
-    map.linez(locs, {strokeWidth: 2});
+    map.linez(locs);
 };
 
 var processRawEvent = function(event) {
@@ -64,7 +64,7 @@ source.onmessage = function(e) {
 var linezOptions = {
     strokeColor: '#111111',
     fillColor: '#555555',
-    strokeWidth: 1,
+    strokeWidth: 2,
     arcSharpness: 1,
     borderWidth: 2,
     highlightBorderWidth: 3,
