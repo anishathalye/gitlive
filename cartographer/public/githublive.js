@@ -22,7 +22,9 @@ var geocode = function(location, success, retries) {
             if (retries > 0) {
                 setTimeout(function() {
                     geocode(location, success, retries - 1);
-                }, 1000);
+                }, 2000);
+            } else {
+                location.reload();
             }
         } else {
             // ignore
