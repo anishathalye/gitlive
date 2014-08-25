@@ -62,19 +62,12 @@ source.onmessage = function(e) {
 };
 
 var linezOptions = {
-    strokeColor: '#111111',
-    fillColor: '#555555',
-    strokeWidth: 2,
     arcSharpness: 1,
-    borderWidth: 2,
     highlightBorderWidth: 3,
-    borderColor: '#FFFFFF',
     popupTemplate: function(geography, data) {
         // remember to escape data
         return '<div class="hoverinfo">' + '<strong>this</strong> <em>is</em> a test' + '</div>';
-    },
-    fillOpacity: 1,
-    highlightFillOpacity: 1
+    }
 };
 
 var handleLinez = function(layer, data) {
@@ -104,32 +97,22 @@ var handleLinez = function(layer, data) {
         .attr('data-info', function(d) {
             return JSON.stringify(d);
         })
-        .style('stroke', function(datum) {
-            if (datum.options && datum.options.borderColor) {
-                return datum.options.borderColor;
+        .attr('class', function(datum) {
+            var previous = d3.select(this).attr('class');
+            if (datum.options && datum.options.color) {
+                var ret = previous + ' ' + datum.options.color;
+                return ret;
             }
-            return linezOptions.borderColor;
-        })
-        .style('stroke-width', linezOptions.borderWidth)
-        .style('fill-opacity', linezOptions.fillOpacity)
-        .style('fill', function(datum) {
-            if (datum.options && datum.options.fillColor) {
-                return datum.options.fillColor;
-            }
-            return linezOptions.fillColor;
+            return previous + ' default';
         })
         .on('mouseover', function(datum) {
             var $this = d3.select(this);
 
             var previousAttributes = {
-                'fill': $this.style('fill'),
-                'stroke': $this.style('stroke'),
                 'stroke-width': $this.style('stroke-width'),
-                'fill-opacity': $this.style('fill-opacity')
             };
 
             $this
-                .style('fill-opacity', linezOptions.highlightFillOpacity)
                 .style('stroke-width', linezOptions.highlightBorderWidth)
                 .attr('data-previousAttributes', JSON.stringify(previousAttributes));
 
@@ -152,15 +135,14 @@ var handleLinez = function(layer, data) {
 
     back.append('svg:path')
         .attr('class', 'githublive-linez')
-        .style('stroke-linecap', 'round')
-        .style('stroke', function(datum) {
-            if (datum.options && datum.options.strokeColor) {
-                return datum.options.strokeColor;
+        .attr('class', function(datum) {
+            var previous = d3.select(this).attr('class');
+            if (datum.options && datum.options.color) {
+                var ret = previous + ' ' + datum.options.color;
+                return ret;
             }
-            return linezOptions.strokeColor;
+            return previous + ' default';
         })
-        .style('fill', 'none')
-        .style('stroke-width', linezOptions.strokeWidth)
         .attr('d', function(datum) {
             var originXY = self.latLngToXY(datum.origin.latitude, datum.origin.longitude);
             var destXY = self.latLngToXY(datum.destination.latitude, datum.destination.longitude);
@@ -199,32 +181,25 @@ var handleLinez = function(layer, data) {
         .attr('data-info', function(d) {
             return JSON.stringify(d);
         })
-        .style('stroke', function(datum) {
-            if (datum.options && datum.options.borderColor) {
-                return datum.options.borderColor;
+        .attr('class', function(datum) {
+            console.log('hi');
+            var previous = d3.select(this).attr('class');
+            if (datum.options && datum.options.color) {
+                console.log('inside');
+                var ret = previous + ' ' + datum.options.color;
+                console.log(ret);
+                return ret;
             }
-            return linezOptions.borderColor;
-        })
-        .style('stroke-width', linezOptions.borderWidth)
-        .style('fill-opacity', linezOptions.fillOpacity)
-        .style('fill', function(datum) {
-            if (datum.options && datum.options.fillColor) {
-                return datum.options.fillColor;
-            }
-            return linezOptions.fillColor;
+            return previous + ' default';
         })
         .on('mouseover', function(datum) {
             var $this = d3.select(this);
 
             var previousAttributes = {
-                'fill': $this.style('fill'),
-                'stroke': $this.style('stroke'),
                 'stroke-width': $this.style('stroke-width'),
-                'fill-opacity': $this.style('fill-opacity')
             };
 
             $this
-                .style('fill-opacity', linezOptions.highlightFillOpacity)
                 .style('stroke-width', linezOptions.highlightBorderWidth)
                 .attr('data-previousAttributes', JSON.stringify(previousAttributes));
 

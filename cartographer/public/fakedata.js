@@ -9,9 +9,7 @@ var fakeLocs = [
             longitude: 40
         },
         options: {
-            strokeColor: '#009999',
-            fillColor: '#007777',
-            borderColor: '#46b3b3'
+            color: 'blue'
         }
     },
     {
@@ -24,9 +22,7 @@ var fakeLocs = [
             longitude: -25
         },
         options: {
-            strokeColor: '#e20048',
-            fillColor: '#b00038',
-            borderColor: '#ea5b89'
+            color: 'red'
         }
     },
     {
@@ -39,9 +35,7 @@ var fakeLocs = [
             longitude: -5
         },
         options: {
-            strokeColor: '#00b945',
-            fillColor: '#008f35',
-            borderColor: '#4fcb7d'
+            color: 'green'
         }
     },
     {
@@ -54,9 +48,7 @@ var fakeLocs = [
             longitude: -80
         },
         options: {
-            strokeColor: '#ffba00',
-            fillColor: '#c69000',
-            borderColor: '#ffd564'
+            color: 'yellow'
         }
     }
 ];

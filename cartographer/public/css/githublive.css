@@ -5,8 +5,65 @@ html, body {
     margin: 0;
     background: #22262e;
 }
+
 #map {
     height: 100%;
     width: 100%;
     margin: 0 auto;
+}
+
+circle {
+    stroke-width: 2 !important;
+    fill-opacity: 1 !important;
+}
+
+circle.red {
+    fill: #b00038 !important;
+    stroke: #ea5b89 !important;
+}
+
+circle.green {
+    fill: #008f35 !important;
+    stroke: #4fcb7d !important;
+}
+
+circle.blue {
+    fill: #007777 !important;
+    stroke: #46b3b3 !important;
+}
+
+circle.yellow {
+    fill: #c69000 !important;
+    stroke: #ffd564 !important;
+}
+
+circle.default {
+    fill: #111111 !important;
+    stroke: #555555 !important;
+}
+
+path.githublive-linez {
+    fill: none !important;
+    stroke-width: 2px !important;
+    stroke-linecap: round !important;
+}
+
+path.red {
+    stroke: #e20048 !important;
+}
+
+path.green {
+    stroke: #00b945 !important;
+}
+
+path.blue {
+    stroke: #009999 !important;
+}
+
+path.yellow {
+    stroke: #ffba00 !important;
+}
+
+path.default {
+    stroke: #111111 !important;
 }
