@@ -21,6 +21,7 @@ app.use(compression());
 app.use(express.static(__dirname + '/public'));
 
 app.get('/events', function(req, res) {
+    return;
     if (req.headers.accept == 'text/event-stream') {
         res.writeHead(200, {
             'content-type': 'text/event-stream',
@@ -34,7 +35,7 @@ app.get('/events', function(req, res) {
             removeConnection(res);
         });
     } else {
-        res.send(500, 'This path for EventSource subscription only...');
+        res.status(500).send('This path for EventSource subscription only...');
     }
 });
 
