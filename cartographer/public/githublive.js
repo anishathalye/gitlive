@@ -30,9 +30,31 @@ var geocode = function(location, success, retries) {
     });
 }
 
+var id = 0;
+
 var locs = [];
 
+var removeLoc = function(data) {
+    var index;
+    for (var i = 0, len = locs.length; i < len; i++) {
+        if (locs[i].id === data.id) {
+            index = i;
+            break;
+        }
+    }
+    locs.splice(index, 1);
+}
+
+var TIMEOUT = 5000;
+
 var processEvent = function(data) {
+    data.id = id++;
+    data.timeoutTime = TIMEOUT;
+    data.timeoutFunc = function() {
+        removeLoc(data);
+        map.linez(locs);
+    }
+    data.timeout = setTimeout(data.timeoutFunc, data.timeoutTime);
     locs.push(data);
     map.linez(locs);
 };
@@ -108,6 +130,8 @@ var handleLinez = function(layer, data) {
             return previous + ' default';
         })
         .on('mouseover', function(datum) {
+            clearTimeout(datum.timeout);
+
             var $this = d3.select(this);
 
             var previousAttributes = {
@@ -121,6 +145,8 @@ var handleLinez = function(layer, data) {
             self.updatePopup($this, datum, linezOptions, svg);
         })
         .on('mouseout', function(datum) {
+            datum.timeout = setTimeout(datum.timeoutFunc, datum.timeoutTime);
+
             var $this = d3.select(this);
             
             var previousAttributes = JSON.parse($this.attr('data-previousAttributes'));
@@ -195,6 +221,8 @@ var handleLinez = function(layer, data) {
             return previous + ' default';
         })
         .on('mouseover', function(datum) {
+            clearTimeout(datum.timeout);
+
             var $this = d3.select(this);
 
             var previousAttributes = {
@@ -208,6 +236,8 @@ var handleLinez = function(layer, data) {
             self.updatePopup($this, datum, linezOptions, svg);
         })
         .on('mouseout', function(datum) {
+            datum.timeout = setTimeout(datum.timeoutFunc, datum.timeoutTime);
+
             var $this = d3.select(this);
             
             var previousAttributes = JSON.parse($this.attr('data-previousAttributes'));
