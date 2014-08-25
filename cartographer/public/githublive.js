@@ -74,7 +74,7 @@ var handleLinez = function(layer, data) {
     var self = this;
     var svg = this.svg;
 
-    var linez = layer.selectAll('path.githublive-linez').data(data, JSON.stringify);
+    var linez = layer.selectAll('.githublive-linez').data(data, JSON.stringify);
 
     var back = linez.enter().append('g');
     var front = linez.enter().append('g');
