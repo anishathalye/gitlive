@@ -11,7 +11,7 @@ var map = new Datamap({
     },
 });
 
-// var geocoder = new google.maps.Geocoder();
+var geocoder = new google.maps.Geocoder();
 
 var geocode = function(location, success, retries) {
     if (typeof(retries) === 'undefined') retries = 3;
@@ -45,9 +45,23 @@ var removeLoc = function(data) {
     locs.splice(index, 1);
 }
 
-var TIMEOUT = 5000;
+var TIMEOUT = 10000;
 
 var processEvent = function(data) {
+    switch(data.type) {
+        case 'WatchEvent':
+            data.options = { color: 'yellow' };
+            break;
+        case 'PullRequestEvent':
+            data.options = { color: 'green' };
+            break;
+        case 'ForkEvent':
+            data.options = { color: 'blue' };
+            break;
+        case 'IssuesEvent':
+            data.options = { color: 'red' };
+            break;
+    }
     data.id = id++;
     data.timeoutTime = TIMEOUT;
     data.timeoutFunc = function() {
@@ -72,7 +86,7 @@ var processRawEvent = function(event) {
             }
             event.origin = fromLoc;
             event.destination = toLoc;
-            processEvent(data);
+            processEvent(event);
         });
     });
 };
@@ -210,12 +224,9 @@ var handleLinez = function(layer, data) {
             return JSON.stringify(d);
         })
         .attr('class', function(datum) {
-            console.log('hi');
             var previous = d3.select(this).attr('class');
             if (datum.options && datum.options.color) {
-                console.log('inside');
                 var ret = previous + ' ' + datum.options.color;
-                console.log(ret);
                 return ret;
             }
             return previous + ' default';
