@@ -1,13 +1,14 @@
 package slurp
 
 import scala.async.Async.{ async, await }
-import scala.collection.mutable.{ Map => MMap }
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
 import java.util.concurrent.{ ExecutionException, TimeoutException }
 
 import dispatch._, Defaults._
+
+import com.twitter.util.LruMap
 
 import morph.ast._, DSL._, Implicits._
 import morph.parser._
@@ -105,21 +106,26 @@ final class GitHubStream(clientId: String, clientSecret: String) {
     }
   }
 
-  // TODO replace this with a LRU cache
-  private val locations: MMap[String, String] = MMap[String, String]()
+  private val LRU_MAP_SIZE = 100000
+  private val locations: LruMap[String, String] = new LruMap[String, String](LRU_MAP_SIZE)
 
   def getUserLocation(user: String): Future[String] = {
-    val url = apiBase / "users" / user <<? keys <:< userAgent
-    val req = Http(url OK as.String)
-    req map { res =>
-      val loc = JsonParser(res) ~> "location" collect {
-        case StringNode(l) => l
-      } getOrElse ""
-      // this is somewhat icky
-      locations.synchronized {
-        locations(user) = loc
+    val location = locations.synchronized { locations lift user }
+    location match {
+      case Some(loc) => Future(loc)
+      case None => {
+        val url = apiBase / "users" / user <<? keys <:< userAgent
+        val req = Http(url OK as.String)
+        req map { res =>
+          val loc = JsonParser(res) ~> "location" collect {
+            case StringNode(l) => l
+          } getOrElse ""
+          locations.synchronized {
+            locations(user) = loc
+          }
+          loc
+        }
       }
-      loc
     }
   }
 
@@ -128,5 +134,6 @@ final class GitHubStream(clientId: String, clientSecret: String) {
   private val userAgent = Map("User-Agent" -> "anishathalye")
 
   private val DEFAULT_TIMEOUT = 10.seconds
+
 
 }

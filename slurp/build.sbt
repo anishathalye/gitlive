@@ -13,5 +13,6 @@ libraryDependencies ++= Seq(
   "com.typesafe" % "config" % "1.2.1",
   "org.parboiled" %% "parboiled-scala" % "1.1.6",
   "net.databinder.dispatch" %% "dispatch-core" % "0.11.2",
-  "com.rabbitmq" % "amqp-client" % "3.3.5"
+  "com.rabbitmq" % "amqp-client" % "3.3.5",
+  "com.twitter" %% "util-collection" % "6.20.0"
 )
