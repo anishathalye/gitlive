@@ -45,18 +45,25 @@ var removeLoc = function(data) {
     locs.splice(index, 1);
 }
 
-var TIMEOUT = 10000;
+var TIMEOUT = 60000;
 
 var processEvent = function(data) {
+    var flip = function(data) {
+        var tmp = data.origin;
+        data.origin = data.destination;
+        data.destination = tmp;
+    }
     switch(data.type) {
         case 'WatchEvent':
             data.options = { color: 'yellow' };
-            break;
-        case 'PullRequestEvent':
-            data.options = { color: 'green' };
+            flip(data);
             break;
         case 'ForkEvent':
             data.options = { color: 'blue' };
+            flip(data);
+            break;
+        case 'PullRequestEvent':
+            data.options = { color: 'green' };
             break;
         case 'IssuesEvent':
             data.options = { color: 'red' };

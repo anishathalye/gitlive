@@ -13,32 +13,32 @@ html, body {
 }
 
 circle.githublive-linez-circle {
-    stroke-width: 2 !important;
+    stroke-width: 2;
 }
 
 circle.red {
-    fill: #b00038 !important;
-    stroke: #ea5b89 !important;
+    fill: #b00038;
+    stroke: #ea5b89;
 }
 
 circle.green {
-    fill: #008f35 !important;
-    stroke: #4fcb7d !important;
+    fill: #008f35;
+    stroke: #4fcb7d;
 }
 
 circle.blue {
-    fill: #007777 !important;
-    stroke: #46b3b3 !important;
+    fill: #007777;
+    stroke: #46b3b3;
 }
 
 circle.yellow {
-    fill: #c69000 !important;
-    stroke: #ffd564 !important;
+    fill: #c69000;
+    stroke: #ffd564;
 }
 
 circle.default {
-    fill: #111111 !important;
-    stroke: #555555 !important;
+    fill: #111111;
+    stroke: #555555;
 }
 
 path.githublive-linez-path {
