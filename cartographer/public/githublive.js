@@ -3,11 +3,11 @@ var map = new Datamap({
     geographyConfig: {
         highlightOnHover: false,
         popupOnHover: false,
-        borderColor: '#132632',
+        borderColor: '#555555',
         borderWidth: 1
     },
     fills: {
-        defaultFill: '#21475f'
+        defaultFill: '#2e2e2e'
     },
 });
 

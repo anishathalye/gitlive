@@ -9,9 +9,9 @@ var fakeLocs = [
             longitude: 40
         },
         options: {
-            strokeColor: '#b98038',
-            fillColor: '#794300',
-            borderColor: '#f6dec0'
+            strokeColor: '#009999',
+            fillColor: '#007777',
+            borderColor: '#46b3b3'
         }
     },
     {
@@ -24,9 +24,9 @@ var fakeLocs = [
             longitude: -5
         },
         options: {
-            strokeColor: '#38982e',
-            fillColor: '#096300',
-            borderColor: '#a2ca9d'
+            strokeColor: '#e20048',
+            fillColor: '#b00038',
+            borderColor: '#ea5b89'
         }
     },
     {
@@ -39,9 +39,9 @@ var fakeLocs = [
             longitude: -5
         },
         options: {
-            strokeColor: '#b6373e',
-            fillColor: '#760006',
-            borderColor: '#f2bdc0'
+            strokeColor: '#00b945',
+            fillColor: '#008f35',
+            borderColor: '#4fcb7d'
         }
     },
     {
@@ -54,9 +54,9 @@ var fakeLocs = [
             longitude: -80
         },
         options: {
-            strokeColor: '#b9a238',
-            fillColor: '#796300',
-            borderColor: '#f6ecc0'
+            strokeColor: '#ffba00',
+            fillColor: '#c69000',
+            borderColor: '#ffd564'
         }
     }
 ];
