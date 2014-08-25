@@ -155,25 +155,10 @@ var handleLinez = function(layer, data) {
 
             var $this = d3.select(this);
 
-            var previousAttributes = {
-                'stroke-width': $this.style('stroke-width'),
-            };
-
-            $this
-                .style('stroke-width', linezOptions.highlightBorderWidth)
-                .attr('data-previousAttributes', JSON.stringify(previousAttributes));
-
             self.updatePopup($this, datum, linezOptions, svg);
         })
         .on('mouseout', function(datum) {
             datum.timeout = setTimeout(datum.timeoutFunc, datum.timeoutTime);
-
-            var $this = d3.select(this);
-            
-            var previousAttributes = JSON.parse($this.attr('data-previousAttributes'));
-            for (var attr in previousAttributes) {
-                $this.style(attr, previousAttributes[attr]);
-            }
 
             d3.selectAll('.datamaps-hoverover').style('display', 'none');
         })
@@ -243,25 +228,10 @@ var handleLinez = function(layer, data) {
 
             var $this = d3.select(this);
 
-            var previousAttributes = {
-                'stroke-width': $this.style('stroke-width'),
-            };
-
-            $this
-                .style('stroke-width', linezOptions.highlightBorderWidth)
-                .attr('data-previousAttributes', JSON.stringify(previousAttributes));
-
             self.updatePopup($this, datum, linezOptions, svg);
         })
         .on('mouseout', function(datum) {
             datum.timeout = setTimeout(datum.timeoutFunc, datum.timeoutTime);
-
-            var $this = d3.select(this);
-            
-            var previousAttributes = JSON.parse($this.attr('data-previousAttributes'));
-            for (var attr in previousAttributes) {
-                $this.style(attr, previousAttributes[attr]);
-            }
 
             d3.selectAll('.datamaps-hoverover').style('display', 'none');
         })
