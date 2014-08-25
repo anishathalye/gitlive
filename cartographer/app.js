@@ -21,7 +21,6 @@ app.use(compression());
 app.use(express.static(__dirname + '/public'));
 
 app.get('/events', function(req, res) {
-    return;
     if (req.headers.accept == 'text/event-stream') {
         res.writeHead(200, {
             'content-type': 'text/event-stream',
