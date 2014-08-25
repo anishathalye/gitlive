@@ -139,6 +139,14 @@ a.plus {
     -moz-transition: transform .5s ease-in-out;
     -o-transition: transform .5s ease-in-out;
     transition: transform .5s ease-in-out;
+    -webkit-transition: background-color .5s ease-in-out;
+    -moz-transition: background-color .5s ease-in-out;
+    -o-transition: background-color .5s ease-in-out;
+    transition: background-color .5s ease-in-out;
+}
+
+:target a.plus {
+    background: transparent;
 }
 
 a.plus:before {
