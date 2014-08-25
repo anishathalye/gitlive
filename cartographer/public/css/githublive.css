@@ -104,6 +104,35 @@ div.lightbox-content {
     width: 50%;
 }
 
+.lightbox-content a {
+    color: #bcd3ff;
+    text-decoration: none;
+    -webkit-transition: all 0.15s linear;
+    -moz-transition: all 0.15s linear;
+    -o-transition: all 0.15s linear;
+    transition: all 0.15s linear;
+}
+
+.lightbox-content a:hover {
+    text-shadow: #bcd3ff 0 0 3px;
+}
+
+.lightbox-content span.red {
+    color: #ea5b89;
+}
+
+.lightbox-content span.green {
+    color: #4fcb7d;
+}
+
+.lightbox-content span.blue {
+    color: #46b3b3;
+}
+
+.lightbox-content span.yellow {
+    color: #ffd564;
+}
+
 @media (min-width: 900px) {
     div.lightbox-content {
         height: 75%;
