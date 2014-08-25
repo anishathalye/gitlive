@@ -104,6 +104,13 @@ div.lightbox-content {
     width: 50%;
 }
 
+.lightbox-content img {
+    margin: auto;
+    display: block;
+    max-width: 50%;
+    border: 1px solid #8d9ebf;
+}
+
 .lightbox-content a {
     color: #bcd3ff;
     text-decoration: none;
