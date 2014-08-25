@@ -100,11 +100,15 @@ var processRawEvent = function(event) {
     });
 };
 
-var source = new EventSource('/events');
-source.onmessage = function(e) {
-    var event = JSON.parse(JSON.parse(e.data));
-    processRawEvent(event);
-};
+if (typeof(EventSource) !== 'undefined') {
+    var source = new EventSource('/events');
+    source.onmessage = function(e) {
+        var event = JSON.parse(JSON.parse(e.data));
+        processRawEvent(event);
+    };
+} else {
+    alert('Your browser is not supported. You must use a browser that supports the EventSource API.');
+}
 
 var linezOptions = {
     arcSharpness: 1,
