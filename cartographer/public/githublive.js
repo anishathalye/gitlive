@@ -24,7 +24,7 @@ var geocode = function(location, success, retries) {
                     geocode(location, success, retries - 1);
                 }, 2000);
             } else {
-                location.reload();
+                window.location.reload();
             }
         } else {
             // ignore

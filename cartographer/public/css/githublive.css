@@ -5,6 +5,7 @@ html, body {
     margin: 0;
     padding: 0;
     background: #22262e;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 #footer {
@@ -19,7 +20,6 @@ html, body {
     bottom: 0;
     width: 100%;
     text-align: center;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 300;
     font-size: 10px;
     color: rgba(255, 255, 255, 0.15);
@@ -43,6 +43,153 @@ html, body {
     height: 100%;
     width: 100%;
     margin: 0 auto;
+}
+
+.shade {
+    background: rgba(0,0,0,.7);
+}
+
+.lightbox-target {
+    position: fixed;
+    top: -100%;
+    width: 100%;
+    opacity: 0;
+    -webkit-transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    -o-transition: opacity .5s ease-in-out;
+    transition: opacity .5s ease-in-out;
+    overflow: hidden;
+}
+
+:target div.lightbox-target {
+    opacity: 1;
+    top: 0;
+    bottom: 0;
+}
+
+.lightbox-close-target {
+    position: fixed;
+    top: -100%;
+    width: 50px;
+    height: 50px;
+    right: 0;
+    overflow: hidden;
+}
+
+:target div.lightbox-close-target {
+    top: 0;
+}
+
+div.lightbox-content {
+    margin: auto;
+    padding: 15px 15px 15px 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    background: #1a1c23;
+    border-radius: 5px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+@media (min-width: 900px) {
+    div.lightbox-content {
+        height: 75%;
+        width: 768px;
+    }
+}
+
+a.lightbox-close {
+    display: block;
+    width:50px;
+    height:50px;
+    box-sizing: border-box;
+    background: transparent;
+    color: black;
+    text-decoration: none;
+    position: absolute;
+    top: 0px;
+    right: 0;
+}
+
+a.plus {
+    display: block;
+    width:50px;
+    height:50px;
+    box-sizing: border-box;
+    background: white;
+    color: black;
+    text-decoration: none;
+    position: absolute;
+    top: 0px;
+    right: 0;
+    -webkit-transition: transform .5s ease-in-out;
+    -moz-transition: transform .5s ease-in-out;
+    -o-transition: transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+}
+
+a.plus:before {
+    content: "";
+    display: block;
+    height: 30px;
+    width: 1px;
+    background: black;
+    position: absolute;
+    left: 26px;
+    top:10px;
+    -webkit-transform:rotate(0deg);
+    -moz-transform:rotate(0deg);
+    -o-transform:rotate(0deg);
+    transform:rotate(0deg);
+    -webkit-transition: transform .5s ease-in-out;
+    -moz-transition: transform .5s ease-in-out;
+    -o-transition: transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+}
+
+:target a.plus:before {
+    -webkit-transform:rotate(-135deg);
+    -moz-transform:rotate(-135deg);
+    -o-transform:rotate(-135deg);
+    transform:rotate(-135deg);
+    -webkit-transition: transform .5s ease-in-out;
+    -moz-transition: transform .5s ease-in-out;
+    -o-transition: transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+}
+
+a.plus:after {
+    content: "";
+    display: block;
+    height: 30px;
+    width: 1px;
+    background: black;
+    position: absolute;
+    left: 26px;
+    top:10px;
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -o-transform:rotate(90deg);
+    transform:rotate(90deg);
+    -webkit-transition: transform .5s ease-in-out;
+    -moz-transition: transform .5s ease-in-out;
+    -o-transition: transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+}
+
+:target a.plus:after {
+    -webkit-transform:rotate(-45deg);
+    -moz-transform:rotate(-45deg);
+    -o-transform:rotate(-45deg);
+    transform:rotate(-45deg);
+    -webkit-transition: transform .5s ease-in-out;
+    -moz-transition: transform .5s ease-in-out;
+    -o-transition: transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
 }
 
 circle.githublive-linez-circle {
