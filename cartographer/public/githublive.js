@@ -113,18 +113,46 @@ if (typeof(EventSource) !== 'undefined') {
     alert('Your browser is not supported. You must use a browser that supports the EventSource API.');
 }
 
+var escapeHtml = function(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+}
+
 var linezOptions = {
     arcSharpness: 1,
     highlightBorderWidth: 3,
-    popupTemplate: function(geography, data) {
+    popupTemplate: function(data) {
         // remember to escape data
-        return '<div class="hoverinfo">' + '<strong>this</strong> <em>is</em> a test' + '</div>';
+        var user = escapeHtml(data.fromLogin);
+        var from = escapeHtml(data.fromLocation);
+        var repo = escapeHtml(data.toLogin) + '/' + escapeHtml(data.toRepo);
+        var to = escapeHtml(data.toLocation);
+        var message;
+        switch (data.type) {
+            case 'WatchEvent':
+                message = '<span class="yellow">starred</span>';
+                break;
+            case 'ForkEvent':
+                message = '<span class="blue">forked</span>';
+                break;
+            case 'PullRequestEvent':
+                message = 'sent a <span class="green">pull request</span> to';
+                break;
+            case 'IssuesEvent':
+                message = 'opened an <span class="red">issue</span> at';
+                break;
+        }
+        return '<b>' + user + '</b> (<em>' + from + '</em>) ' + message + ' <b>' + repo + '</b> (<em>' + to + '</em>)';
     }
 };
 
 var handleLinez = function(layer, data) {
     var self = this;
     var svg = this.svg;
+
+    var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(linezOptions.popupTemplate);
+    layer.call(tip);
 
     var linez = layer.selectAll('.githublive-linez').data(data, JSON.stringify);
 
@@ -162,14 +190,12 @@ var handleLinez = function(layer, data) {
         .on('mouseover', function(datum) {
             clearTimeout(datum.timeout);
 
-            var $this = d3.select(this);
-
-            self.updatePopup($this, datum, linezOptions, svg);
+            tip.show(datum);
         })
         .on('mouseout', function(datum) {
             datum.timeout = setTimeout(datum.timeoutFunc, datum.timeoutTime);
 
-            d3.selectAll('.datamaps-hoverover').style('display', 'none');
+            tip.hide(datum);
         })
         .transition().delay(0).duration(400)
             .attr('r', 10)
@@ -235,14 +261,12 @@ var handleLinez = function(layer, data) {
         .on('mouseover', function(datum) {
             clearTimeout(datum.timeout);
 
-            var $this = d3.select(this);
-
-            self.updatePopup($this, datum, linezOptions, svg);
+            tip.show(datum);
         })
         .on('mouseout', function(datum) {
             datum.timeout = setTimeout(datum.timeoutFunc, datum.timeoutTime);
 
-            d3.selectAll('.datamaps-hoverover').style('display', 'none');
+            tip.hide(datum);
         })
         .transition().delay(1000).duration(400)
             .attr('r', 10)

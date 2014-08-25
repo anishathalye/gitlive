@@ -10,6 +10,7 @@
     "tests"
   ],
   "dependencies": {
-    "datamaps": "~0.3.3"
+    "datamaps": "~0.3.3",
+    "d3-tip": "~0.6.4"
   }
 }
