@@ -340,17 +340,17 @@ path.default {
 }
 
 .d3-tip span.red {
-    color: #b00038;
+    color: #e20048;
 }
 
 .d3-tip span.green {
-    color: #008f35;
+    color: #00b945;
 }
 
 .d3-tip span.blue {
-    color: #007777;
+    color: #009999;
 }
 
 .d3-tip span.yellow {
-    color: #c69000;
+    color: #ffba00;
 }
