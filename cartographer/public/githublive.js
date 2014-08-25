@@ -143,7 +143,7 @@ var linezOptions = {
                 message = 'opened an <span class="red">issue</span> at';
                 break;
         }
-        return '<b>' + user + '</b> (<em>' + from + '</em>) ' + message + ' <b>' + repo + '</b> (<em>' + to + '</em>)';
+        return user + ' <em>(' + from + ')</em> ' + message + ' ' + repo + ' <em>(' + to + ')</em>';
     }
 };
 
