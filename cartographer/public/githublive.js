@@ -11,6 +11,9 @@ var map = new Datamap({
     },
 });
 
+// have map intercept clicks / taps
+document.getElementById('map').addEventListener('click', function() {});
+
 var geocoder = new google.maps.Geocoder();
 
 var geocode = function(location, success, retries) {
