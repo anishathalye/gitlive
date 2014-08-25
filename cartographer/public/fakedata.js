@@ -21,7 +21,7 @@ var fakeLocs = [
         },
         destination: {
             latitude: 0,
-            longitude: -5
+            longitude: -25
         },
         options: {
             strokeColor: '#e20048',
