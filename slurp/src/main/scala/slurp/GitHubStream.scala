@@ -78,13 +78,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
         }
       }
 
-      val uniqed = filtered filter { event =>
-        val login = (event ~> "actor" ~> "login").asString
-        val targetLogin = (event ~> "repo" ~> "name").asString takeWhile { _ != '/'}
-        login != targetLogin
-      }
-
-      val events = uniqed map { event =>
+      val events = filtered map { event =>
         val eventType = (event ~> "type").asString
         val login = (event ~> "actor" ~> "login").asString
         val (targetLogin, targetRest) = (event ~> "repo" ~> "name").asString span { _ != '/' }
