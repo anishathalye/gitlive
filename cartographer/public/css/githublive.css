@@ -3,6 +3,7 @@ html, body {
     height: 100%;
     width: 100%;
     margin: 0;
+    padding: 0;
     background: #22262e;
 }
 
@@ -27,13 +28,15 @@ html, body {
 #footer a {
     color: rgba(255, 255, 255, 0.15);
     text-decoration: none;
+    -webkit-transition: all 0.15s linear;
+    -moz-transition: all 0.15s linear;
+    -o-transition: all 0.15s linear;
     transition: all 0.15s linear;
 }
 
 #footer a:hover {
     color: rgba(255, 255, 255, 0.5);
     text-shadow: rgba(255, 255, 255, 0.5) 0 0 3px;
-    transition: all 0.15s linear;
 }
 
 #map {
@@ -44,12 +47,14 @@ html, body {
 
 circle.githublive-linez-circle {
     stroke-width: 2;
+    -webkit-transition: all 0.15s linear;
+    -moz-transition: all 0.15s linear;
+    -o-transition: all 0.15s linear;
     transition: all 0.15s linear;
 }
 
 circle.githublive-linez-circle:hover {
     stroke-width: 3;
-    transition: all 0.15s linear;
 }
 
 circle.red {
