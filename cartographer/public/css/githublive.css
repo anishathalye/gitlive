@@ -3,6 +3,7 @@ html, body {
     height: 100%;
     width: 100%;
     margin: 0;
+    background: #132632;
 }
 #map {
     height: 100%;

@@ -2,8 +2,13 @@ var map = new Datamap({
     element: document.getElementById('map'),
     geographyConfig: {
         highlightOnHover: false,
-        popupOnHover: false
-    }
+        popupOnHover: false,
+        borderColor: '#132632',
+        borderWidth: 1
+    },
+    fills: {
+        defaultFill: '#21475f'
+    },
 });
 
 // var geocoder = new google.maps.Geocoder();
@@ -27,8 +32,8 @@ var geocode = function(location, success, retries) {
 
 var locs = [];
 
-var processEvent = function(from, to) {
-    locs.push({origin: from, destination: to});
+var processEvent = function(data) {
+    locs.push(data);
     map.linez(locs, {strokeWidth: 2});
 };
 
@@ -43,7 +48,9 @@ var processRawEvent = function(event) {
                 latitude: to[0].geometry.location.lat(),
                 longitude: to[0].geometry.location.lng()
             }
-            processEvent(fromLoc, toLoc);
+            event.origin = fromLoc;
+            event.destination = toLoc;
+            processEvent(data);
         });
     });
 };
@@ -55,8 +62,8 @@ source.onmessage = function(e) {
 };
 
 var linezOptions = {
-    strokeColor: '#000000',
-    fillColor: '#111111',
+    strokeColor: '#111111',
+    fillColor: '#555555',
     strokeWidth: 1,
     arcSharpness: 1,
     borderWidth: 2,
@@ -66,8 +73,8 @@ var linezOptions = {
         // remember to escape data
         return '<div class="hoverinfo">' + '<strong>this</strong> <em>is</em> a test' + '</div>';
     },
-    fillOpacity: 0.75,
-    highlightFillOpacity: 0.9
+    fillOpacity: 1,
+    highlightFillOpacity: 1
 };
 
 var handleLinez = function(layer, data) {
@@ -75,9 +82,11 @@ var handleLinez = function(layer, data) {
     var svg = this.svg;
 
     var linez = layer.selectAll('path.githublive-linez').data(data, JSON.stringify);
-    console.log(linez);
 
-    linez.enter().append('svg:circle')
+    var back = linez.enter().append('g');
+    var front = linez.enter().append('g');
+
+    front.append('svg:circle')
         .attr('class', 'githublive-linez')
         .attr('cx', function(datum) {
             var latLng = self.latLngToXY(datum.origin.latitude, datum.origin.longitude);
@@ -95,7 +104,12 @@ var handleLinez = function(layer, data) {
         .attr('data-info', function(d) {
             return JSON.stringify(d);
         })
-        .style('stroke', linezOptions.borderColor)
+        .style('stroke', function(datum) {
+            if (datum.options && datum.options.borderColor) {
+                return datum.options.borderColor;
+            }
+            return linezOptions.borderColor;
+        })
         .style('stroke-width', linezOptions.borderWidth)
         .style('fill-opacity', linezOptions.fillOpacity)
         .style('fill', function(datum) {
@@ -115,7 +129,7 @@ var handleLinez = function(layer, data) {
             };
 
             $this
-                .style('fill', linezOptions.highlightFillOpacity)
+                .style('fill-opacity', linezOptions.highlightFillOpacity)
                 .style('stroke-width', linezOptions.highlightBorderWidth)
                 .attr('data-previousAttributes', JSON.stringify(previousAttributes));
 
@@ -136,7 +150,7 @@ var handleLinez = function(layer, data) {
         .transition().delay(400).duration(200)
             .attr('r', 5);
 
-    linez.enter().append('svg:path')
+    back.append('svg:path')
         .attr('class', 'githublive-linez')
         .style('stroke-linecap', 'round')
         .style('stroke', function(datum) {
@@ -167,7 +181,7 @@ var handleLinez = function(layer, data) {
             .ease('linear')
             .attr('stroke-dashoffset', 0);
 
-    linez.enter().append('svg:circle')
+    front.append('svg:circle')
         .attr('class', 'githublive-linez')
         .attr('cx', function(datum) {
             var latLng = self.latLngToXY(datum.destination.latitude, datum.destination.longitude);
@@ -185,7 +199,12 @@ var handleLinez = function(layer, data) {
         .attr('data-info', function(d) {
             return JSON.stringify(d);
         })
-        .style('stroke', linezOptions.borderColor)
+        .style('stroke', function(datum) {
+            if (datum.options && datum.options.borderColor) {
+                return datum.options.borderColor;
+            }
+            return linezOptions.borderColor;
+        })
         .style('stroke-width', linezOptions.borderWidth)
         .style('fill-opacity', linezOptions.fillOpacity)
         .style('fill', function(datum) {
@@ -205,7 +224,7 @@ var handleLinez = function(layer, data) {
             };
 
             $this
-                .style('fill', linezOptions.highlightFillOpacity)
+                .style('fill-opacity', linezOptions.highlightFillOpacity)
                 .style('stroke-width', linezOptions.highlightBorderWidth)
                 .attr('data-previousAttributes', JSON.stringify(previousAttributes));
 
