@@ -61,11 +61,9 @@ var processEvent = function(data) {
     switch(data.type) {
         case 'WatchEvent':
             data.options = { color: 'yellow' };
-            flip(data);
             break;
         case 'ForkEvent':
             data.options = { color: 'blue' };
-            flip(data);
             break;
         case 'PullRequestEvent':
             data.options = { color: 'green' };
