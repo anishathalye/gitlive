@@ -12,7 +12,7 @@ html, body {
     margin: 0 auto;
 }
 
-circle {
+circle.githublive-linez-circle {
     stroke-width: 2 !important;
 }
 
@@ -41,7 +41,7 @@ circle.default {
     stroke: #555555 !important;
 }
 
-path.githublive-linez {
+path.githublive-linez-path {
     fill: none !important;
     stroke-width: 2px !important;
     stroke-linecap: round !important;

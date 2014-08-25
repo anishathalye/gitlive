@@ -76,11 +76,13 @@ var handleLinez = function(layer, data) {
 
     var linez = layer.selectAll('.githublive-linez').data(data, JSON.stringify);
 
-    var back = linez.enter().append('g');
-    var front = linez.enter().append('g');
+    var container = linez.enter().append('g').attr('class', 'githublive-linez');
+
+    var back = container.append('g');
+    var front = container.append('g');
 
     front.append('svg:circle')
-        .attr('class', 'githublive-linez')
+        .attr('class', 'githublive-linez-circle')
         .attr('cx', function(datum) {
             var latLng = self.latLngToXY(datum.origin.latitude, datum.origin.longitude);
             if (latLng) {
@@ -134,7 +136,7 @@ var handleLinez = function(layer, data) {
             .attr('r', 5);
 
     back.append('svg:path')
-        .attr('class', 'githublive-linez')
+        .attr('class', 'githublive-linez-path')
         .attr('class', function(datum) {
             var previous = d3.select(this).attr('class');
             if (datum.options && datum.options.color) {
@@ -164,7 +166,7 @@ var handleLinez = function(layer, data) {
             .attr('stroke-dashoffset', 0);
 
     front.append('svg:circle')
-        .attr('class', 'githublive-linez')
+        .attr('class', 'githublive-linez-circle')
         .attr('cx', function(datum) {
             var latLng = self.latLngToXY(datum.destination.latitude, datum.destination.longitude);
             if (latLng) {
