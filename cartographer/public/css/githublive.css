@@ -95,6 +95,15 @@ div.lightbox-content {
     color: #8d9ebf;
 }
 
+.lightbox-content h1 {
+    text-align: center;
+}
+
+.lightbox-content hr {
+    border: 1px solid #8d9ebf;
+    width: 50%;
+}
+
 @media (min-width: 900px) {
     div.lightbox-content {
         height: 75%;
