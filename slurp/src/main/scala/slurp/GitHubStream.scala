@@ -106,7 +106,7 @@ final class GitHubStream(clientId: String, clientSecret: String) {
     }
   }
 
-  private val LRU_MAP_SIZE = 100000
+  private val LRU_MAP_SIZE = 20000
   private val locations: LruMap[String, String] = new LruMap[String, String](LRU_MAP_SIZE)
 
   def getUserLocation(user: String): Future[String] = {
