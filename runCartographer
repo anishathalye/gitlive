@@ -4,6 +4,6 @@ set -eu
 
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-cd cartographer
+cd $BASEDIR/cartographer
 
 forever --minUptime 500ms --spinSleepTime 1000ms app.js
