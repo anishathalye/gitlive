@@ -4,9 +4,10 @@
   "repository": "https://github.com/anishathalye/gh-vis-challenge",
   "version": "1.0.0",
   "dependencies": {
+    "compression": "^1.0.11",
     "express": "^4.8.4",
-    "rabbit.js": "^0.4.1",
-    "compression": "~1.0.11"
+    "express-minify": "0.0.11",
+    "rabbit.js": "^0.4.1"
   },
   "engine": "node >= 0.10"
 }

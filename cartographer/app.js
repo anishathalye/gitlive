@@ -1,5 +1,6 @@
 var express = require('express');
 var compression = require('compression');
+var minify = require('express-minify');
 var rabbit = require('rabbit.js');
 var connections = [];
 
@@ -18,6 +19,7 @@ context.on('ready', function() {
 
 app = express();
 app.use(compression());
+app.use(minify({cache: __dirname + '/cache'}));
 app.use(express.static(__dirname + '/public'));
 
 app.get('/events', function(req, res) {

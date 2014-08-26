@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+cd $BASEDIR
+
+mkdir -p public/components
+
+cp bower_components/datamaps/dist/datamaps.world.min.js public/components/datamaps.world.min.js
+cp bower_components/d3-tip/index.js public/components/d3-tip.js
