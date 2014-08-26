@@ -82,6 +82,7 @@ html, body {
 
 div.lightbox-content {
     margin: auto;
+    overflow-y: auto;
     padding: 15px 15px 15px 15px;
     position: absolute;
     top: 0;
@@ -93,6 +94,13 @@ div.lightbox-content {
     background: #1a1c23;
     border-radius: 5px;
     color: #8d9ebf;
+}
+
+@media (min-width: 900px) {
+    div.lightbox-content {
+        height: 75%;
+        width: 768px;
+    }
 }
 
 .lightbox-content h1 {
@@ -138,13 +146,6 @@ div.lightbox-content {
 
 .lightbox-content span.yellow {
     color: #ffd564;
-}
-
-@media (min-width: 900px) {
-    div.lightbox-content {
-        height: 75%;
-        width: 768px;
-    }
 }
 
 a.lightbox-close {
