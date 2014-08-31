@@ -145,6 +145,8 @@ var linezOptions = {
     }
 };
 
+var mobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
 var handleLinez = function(layer, data) {
     var self = this;
     var svg = this.svg;
@@ -194,6 +196,11 @@ var handleLinez = function(layer, data) {
             datum.timeout = setTimeout(datum.timeoutFunc, datum.timeoutTime);
 
             tip.hide(datum);
+        })
+        .on('click', function(datum) {
+            if (!mobileDevice) {
+                window.open(datum.url, '_blank');
+            }
         })
         .transition().delay(0).duration(400)
             .attr('r', 10)
@@ -265,6 +272,11 @@ var handleLinez = function(layer, data) {
             datum.timeout = setTimeout(datum.timeoutFunc, datum.timeoutTime);
 
             tip.hide(datum);
+        })
+        .on('click', function(datum) {
+            if (!mobileDevice) {
+                window.open(datum.url, '_blank');
+            }
         })
         .transition().delay(1000).duration(400)
             .attr('r', 10)
