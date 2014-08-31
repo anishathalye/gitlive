@@ -71,11 +71,11 @@ final class GitHubStream(clientId: String, clientSecret: String) {
 
       val filtered = latest filter { event =>
         (event ~> "type").asString match {
-          case "ForkEvent" => true
-          case "WatchEvent" => true
+          case "ForkEvent"        => true
+          case "WatchEvent"       => true
           case "PullRequestEvent" => (event ~> "payload" ~> "action").asString == "opened"
-          case "IssuesEvent" => (event ~> "payload" ~> "action").asString == "opened"
-          case _ => false
+          case "IssuesEvent"      => (event ~> "payload" ~> "action").asString == "opened"
+          case _                  => false
         }
       }
 
@@ -84,6 +84,13 @@ final class GitHubStream(clientId: String, clientSecret: String) {
         val login = (event ~> "actor" ~> "login").asString
         val (targetLogin, targetRest) = (event ~> "repo" ~> "name").asString span { _ != '/' }
         val targetRepo = targetRest.tail
+        val url = (event ~> "type").asString match {
+          case "ForkEvent"        => (event ~> "payload" ~> "forkee" ~> "html_url").asString
+          case "WatchEvent"       => s"https://github.com/${(event ~> "repo" ~> "name").asString}"
+          case "PullRequestEvent" => (event ~> "payload" ~> "pull_request" ~> "html_url").asString
+          case "IssuesEvent"      => (event ~> "payload" ~> "issue" ~> "html_url").asString
+          case _                  => "https://github.com/"
+        }
         async {
           val fromLocation = await(getUserLocation(login))
           val toLocation = await(getUserLocation(targetLogin))
@@ -93,7 +100,8 @@ final class GitHubStream(clientId: String, clientSecret: String) {
             "fromLocation" -> fromLocation,
             "toRepo" -> targetRepo,
             "toLogin" -> targetLogin,
-            "toLocation" -> toLocation
+            "toLocation" -> toLocation,
+            "url" -> url
           )
         }
       }
@@ -134,6 +142,5 @@ final class GitHubStream(clientId: String, clientSecret: String) {
   private val userAgent = Map("User-Agent" -> "anishathalye")
 
   private val DEFAULT_TIMEOUT = 10.seconds
-
 
 }
