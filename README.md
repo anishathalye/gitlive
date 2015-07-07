@@ -6,5 +6,5 @@ Made with &hearts; by Anish Athalye ([anishathalye][anishathalye]).
 
 The code is a bit of a mess. Use it at your own risk.
 
-[blog]: http://www.anishathalye.com/2014/08/25/git-live/
+[blog]: http://www.anishathalye.com/2015/07/07/bye-git-live/
 [anishathalye]: https://github.com/anishathalye
